@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { DB_NAME } from "../constants.js";
-
 //function to connect with database
 const connectDB = async () => {
   try {
@@ -11,6 +10,8 @@ const connectDB = async () => {
       "DATABASE CONNECTED !!! DB HOST ::",
       `${connectionInstance.connection.host}`
     );
+
+    console.log("port is", process.env.PORT);
   } catch (error) {
     console.log("MONGODB connection failed", error);
     process.exit(1);

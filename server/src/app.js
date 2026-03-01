@@ -31,4 +31,7 @@ app.use(cookieParser());
 //to store images and files in public
 app.use(express.static("public"));
 
+import studentRouter from "./routes/students.routes.js";
+
+app.use("/api/v1/students", studentRouter);
 export default app;
