@@ -15,6 +15,9 @@ import LoginLayout from "./components/Login/loginLayout.jsx";
 import RegisterLayout from "./components/register/RegisterLayout.jsx";
 import { StudentProvider } from "./contexts/studentContext.jsx";
 import StudentProfile from "./components/student/StudentProfile.jsx";
+import { StaffProvider } from "./contexts/StaffContext.jsx";
+import StaffProfile from "./components/Staff/StaffProfile.jsx";
+import StaffDashboard from "./components/staff/Staffdashboard.jsx";
 const route = createBrowserRouter([
   {
     path: "/",
@@ -48,8 +51,16 @@ const route = createBrowserRouter([
         element: <StudentProfile />,
       },
       {
+        path: "staffprofile",
+        element: <StaffProfile />,
+      },
+      {
         path: "dashboard",
         element: <Menu />,
+      },
+      {
+        path: "staff-dashboard",
+        element: <StaffDashboard />,
       },
       {
         path: "register",
@@ -76,8 +87,10 @@ const route = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <StudentProvider>
-      <RouterProvider router={route}></RouterProvider>
-    </StudentProvider>
+    <StaffProvider>
+      <StudentProvider>
+        <RouterProvider router={route}></RouterProvider>
+      </StudentProvider>
+    </StaffProvider>
   </StrictMode>,
 );
