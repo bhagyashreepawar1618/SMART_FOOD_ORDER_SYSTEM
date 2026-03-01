@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
 const LoginHeader = () => {
   const [active, setActive] = useState("student");
@@ -14,28 +15,32 @@ const LoginHeader = () => {
         {/* Section Toggle */}
         <div className="flex bg-[#f8e9ee] p-1 rounded-xl">
           {/* Student Button */}
-          <button
-            onClick={() => setActive("student")}
-            className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
-              active === "student"
-                ? "bg-[#AB274F] text-white shadow-md"
-                : "text-[#AB274F] hover:bg-[#f3cfd8]"
-            }`}
-          >
-            Student
-          </button>
+          <Link to="/login">
+            <button
+              onClick={() => setActive("student")}
+              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
+                active === "student"
+                  ? "bg-[#AB274F] text-white shadow-md"
+                  : "text-[#AB274F] hover:bg-[#f3cfd8]"
+              }`}
+            >
+              Student
+            </button>
+          </Link>
 
           {/* Admin Button */}
-          <button
-            onClick={() => setActive("admin")}
-            className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
-              active === "admin"
-                ? "bg-[#AB274F] text-white shadow-md"
-                : "text-[#AB274F] hover:bg-[#f3cfd8]"
-            }`}
-          >
-            Admin
-          </button>
+          <Link to="/login/staff">
+            <button
+              onClick={() => setActive("admin")}
+              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
+                active === "admin"
+                  ? "bg-[#AB274F] text-white shadow-md"
+                  : "text-[#AB274F] hover:bg-[#f3cfd8]"
+              }`}
+            >
+              Admin
+            </button>
+          </Link>
         </div>
       </div>
     </div>
