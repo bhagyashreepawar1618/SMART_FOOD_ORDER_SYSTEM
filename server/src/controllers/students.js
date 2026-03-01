@@ -3,6 +3,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiErrors.js";
 import { Student } from "../models/Student.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import { Menu } from "../models/menu.model.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -71,6 +72,7 @@ export const registerStudent = asyncHandler(async (req, res) => {
     throw new ApiError(500, "something went wrong while registering Student");
   }
 
+  console.log("successfull...!!");
   return res
     .status(201)
     .json(
@@ -100,6 +102,7 @@ export const loginStudent = asyncHandler(async (req, res) => {
   //but password in data base is hashed so we need bcrypt to compare
   const isPassCorrect = await student.isPasswordCorrect(password);
 
+  console.log("ispass correct=", isPassCorrect);
   if (!isPassCorrect) {
     throw new ApiError(400, "Password is Incorrect");
   }
@@ -109,9 +112,13 @@ export const loginStudent = asyncHandler(async (req, res) => {
     student._id
   );
 
+  console.log("access token form controller=", accessToken);
+
   const loggedInStudent = await Student.findById(student._id).select(
     "-password -refreshToken"
   );
+
+  console.log("looged in successfulyy");
 
   return res
     .status(200)
@@ -122,4 +129,18 @@ export const loginStudent = asyncHandler(async (req, res) => {
         "student logged in successFully"
       )
     );
+});
+
+export const getTodaysMenu = asyncHandler(async (req, res) => {
+  const { date } = req.body;
+  const menu = await Menu.findOne({ date });
+
+  if (!menu) {
+    throw new ApiError(400, "Menu for this date is not present");
+  }
+
+  //if menu is there then return data
+  return res
+    .status(200)
+    .json(new ApiResponse(200, menu, "Menu data fetched successfully"));
 });
