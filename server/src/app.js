@@ -32,6 +32,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 import studentRouter from "./routes/students.routes.js";
-
+import Adminrouter from "./routes/admin.routes.js";
 app.use("/api/v1/students", studentRouter);
+app.use("/api/v1/admin", Adminrouter);
 export default app;
