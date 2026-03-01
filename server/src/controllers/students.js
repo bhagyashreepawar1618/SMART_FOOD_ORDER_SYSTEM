@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiErrors.js";
 import { Student } from "../models/Student.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 import { Menu } from "../models/menu.model.js";
+import { Order } from "../models/order.model.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -143,4 +144,35 @@ export const getTodaysMenu = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, menu, "Menu data fetched successfully"));
+});
+
+export const setStudentMenu = asyncHandler(async (req, res) => {
+  //get selected data from student
+  const { selectedSabji, selectedSweet, rotis } = req.body;
+
+  if (!selectedSabji || !selectedSweet || !rotis) {
+    throw new ApiError(409, "all fields are compulsory");
+  }
+
+  //save it in database
+  const studentMenu = await Order.create({
+    student: req.student._id,
+    selectedSabji,
+    selectedSweet,
+    rotis,
+  });
+
+  console.log("student menu=", studentMenu);
+  const createdStudentMenu = await Order.findOne({ student: req.student._id });
+
+  console.log("student menu is=", createdStudentMenu);
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        createdStudentMenu,
+        "Student menu saved successfully"
+      )
+    );
 });
