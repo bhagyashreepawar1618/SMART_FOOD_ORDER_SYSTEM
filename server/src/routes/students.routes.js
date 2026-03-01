@@ -2,6 +2,7 @@ import {
   registerStudent,
   loginStudent,
   getTodaysMenu,
+  setStudentMenu,
 } from "../controllers/students.js";
 import { Router } from "express";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -19,4 +20,5 @@ router.route("/register").post(
 );
 router.route("/login").post(loginStudent);
 router.route("/getmenu").post(verifyJWT, getTodaysMenu);
+router.route("/set-student-menu").post(verifyJWT, setStudentMenu);
 export default router;
