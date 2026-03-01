@@ -72,7 +72,6 @@ function Header() {
           >
             Profile
           </NavLink>
-          v
         </nav>
       </div>
     </header>
