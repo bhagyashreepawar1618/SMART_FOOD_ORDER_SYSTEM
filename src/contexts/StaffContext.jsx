@@ -5,12 +5,15 @@ const Staffcontext = createContext();
 export const StaffProvider = ({ children }) => {
   const [staff, setStaff] = useState(null);
   const [staffToken, setStaffToken] = useState(null);
+  const [totalData, setTotalData] = useState();
 
   const value = {
     staff,
     setStaff,
     staffToken,
     setStaffToken,
+    totalData,
+    setTotalData,
   };
 
   return (
