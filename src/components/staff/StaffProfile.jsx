@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useStaff } from "../../contexts/StaffContext";
+import { useStaff } from "../../contexts/StaffContext.jsx";
 
 function StaffProfile() {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ function StaffProfile() {
 
         {/* to see all the data enterd by students  */}
         <button
-          onClick={() => navigate("/staff-data")}
+          onClick={() => navigate("/staff-total-data")}
           className="w-full mt-6 py-3 rounded-xl 
           bg-[#AB274F] 
           hover:bg-[#8e1f42] 
@@ -57,7 +57,7 @@ function StaffProfile() {
         </button>
 
         <button
-          onClick={() => navigate("/staff-data")}
+          onClick={() => navigate("/change-staff-password")}
           className="w-full mt-6 py-3 rounded-xl 
           bg-[#AB274F] 
           hover:bg-[#8e1f42] 
@@ -70,7 +70,7 @@ function StaffProfile() {
         </button>
 
         <button
-          onClick={() => navigate("/staff-data")}
+          onClick={() => navigate("/staff-update-profile")}
           className="w-full mt-6 py-3 rounded-xl 
           bg-[#AB274F] 
           hover:bg-[#8e1f42] 
