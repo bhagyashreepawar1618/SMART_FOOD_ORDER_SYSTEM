@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiErrors.js";
 import { Admin } from "../models/admin.model.js";
 import { Menu } from "../models/menu.model.js";
 import { Order } from "../models/order.model.js";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshTokens = async (adminId) => {
   try {
@@ -189,7 +190,7 @@ export const updatePassword = asyncHandler(async (req, res) => {
 });
 
 export const getAllOrders = asyncHandler(async (req, res) => {
-  const { menuId } = req.query; // optional filter by menu/date
+  const { menuId } = req.params;
 
   let filter = {};
 
@@ -211,6 +212,75 @@ export const getAllOrders = asyncHandler(async (req, res) => {
         orders,
       },
       "All orders fetched successfully"
+    )
+  );
+});
+
+export const getMenuStats = asyncHandler(async (req, res) => {
+  const { menuId } = req.params;
+
+  if (!menuId) {
+    throw new ApiError(400, "Menu ID is required");
+  }
+
+  //  Sabji Votes
+  const sabjiStats = await Order.aggregate([
+    { $match: { menu: new mongoose.Types.ObjectId(menuId) } },
+    {
+      $group: {
+        _id: "$selectedSabji",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        sabji: "$_id",
+        count: 1,
+        _id: 0,
+      },
+    },
+  ]);
+
+  //Sweet Votes
+  const sweetStats = await Order.aggregate([
+    { $match: { menu: new mongoose.Types.ObjectId(menuId) } },
+    {
+      $group: {
+        _id: "$selectedSweet",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        sweet: "$_id",
+        count: 1,
+        _id: 0,
+      },
+    },
+  ]);
+
+  // 3️⃣ Total Rotis
+  const rotiStats = await Order.aggregate([
+    { $match: { menu: new mongoose.Types.ObjectId(menuId) } },
+    {
+      $group: {
+        _id: null,
+        totalRotis: { $sum: "$rotis" },
+        totalOrders: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        sabjiStats,
+        sweetStats,
+        totalRotis: rotiStats[0]?.totalRotis || 0,
+        totalOrders: rotiStats[0]?.totalOrders || 0,
+      },
+      "Menu statistics fetched successfully"
     )
   );
 });
