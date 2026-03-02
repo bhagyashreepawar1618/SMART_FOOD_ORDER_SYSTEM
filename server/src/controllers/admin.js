@@ -164,3 +164,25 @@ export const updateAdminProfile = asyncHandler(async (req, res) => {
       new ApiResponse(200, updatedAdmin, "Admin details updated successfully")
     );
 });
+
+export const updatePassword = asyncHandler(async (req, res) => {
+  //take old password and new password from admin
+  const { oldPassword, newPassword } = req.body;
+
+  const admin = await Admin.findById(req.admin?._id);
+
+  const isPasswordCorrect = await admin.isPasswordCorrect(oldPassword);
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid password");
+  }
+
+  //if password is correct
+  admin.password = newPassword;
+
+  await admin.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password updated successfully"));
+});
