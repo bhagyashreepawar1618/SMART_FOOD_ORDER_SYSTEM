@@ -16,11 +16,12 @@ import RegisterLayout from "./components/register/RegisterLayout.jsx";
 import { StudentProvider } from "./contexts/studentContext.jsx";
 import StudentProfile from "./components/student/StudentProfile.jsx";
 import { StaffProvider } from "./contexts/StaffContext.jsx";
-import StaffProfile from "./components/Staff/StaffProfile.jsx";
+import StaffProfile from "./components/staff/StaffProfile.jsx";
 import StaffDashboard from "./components/staff/Staffdashboard.jsx";
 import OrderSummary from "./components/student/OrderSummary.jsx";
 import AdminUpdatePassword from "./components/staff/UpdatePassword.jsx";
 import AdminUpdateProfile from "./components/staff/UpdateProfile.jsx";
+import StaffOrdersDashboard from "./components/staff/TotalData.jsx";
 const route = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +49,10 @@ const route = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "staff-total-data",
+        element: <StaffOrdersDashboard />,
       },
       {
         path: "profile",
