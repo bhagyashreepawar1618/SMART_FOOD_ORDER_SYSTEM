@@ -147,32 +147,37 @@ export const getTodaysMenu = asyncHandler(async (req, res) => {
 });
 
 export const setStudentMenu = asyncHandler(async (req, res) => {
-  //get selected data from student
-  const { selectedSabji, selectedSweet, rotis } = req.body;
+  const todayDate = new Date().toLocaleDateString("en-CA");
+  console.log("today date=", todayDate);
+  const todayMenu = await Menu.findOne({ date: todayDate });
 
-  if (!selectedSabji || !selectedSweet || !rotis) {
-    throw new ApiError(409, "all fields are compulsory");
+  if (!todayMenu) {
+    throw new ApiError(404, "Today's menu not found. Please contact admin.");
   }
 
-  //save it in database
-  const studentMenu = await Order.create({
-    student: req.student._id,
-    selectedSabji,
-    selectedSweet,
-    rotis,
-  });
+  const { selectedSabji, selectedSweet, rotis } = req.body;
 
-  console.log("student menu=", studentMenu);
-  const createdStudentMenu = await Order.findOne({ student: req.student._id });
+  if (!selectedSabji || !selectedSweet || !rotis || !todayMenu._id) {
+    throw new ApiError(400, "All fields are compulsory");
+  }
 
-  console.log("student menu is=", createdStudentMenu);
+  const studentId = req.student._id;
+
+  const order = await Order.findOneAndUpdate(
+    { student: studentId, menu: todayMenu._id }, // condition
+    {
+      selectedSabji,
+      selectedSweet,
+      rotis,
+    },
+    {
+      new: true,
+      upsert: true,
+      runValidators: true,
+    }
+  );
+
   return res
     .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        createdStudentMenu,
-        "Student menu saved successfully"
-      )
-    );
+    .json(new ApiResponse(200, order, "Student menu saved successfully"));
 });
