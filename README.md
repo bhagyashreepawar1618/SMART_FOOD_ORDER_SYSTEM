@@ -1,4 +1,4 @@
-# 🍽 Mess Management & Voting System
+# 🍽 SMART FOOD ORDER SYSTEM
 
 #Live Links - 
 ---
